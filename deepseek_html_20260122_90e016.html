@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Generator | Unlimited Free Video Creation</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-video"></i>
+                <h1>AI Video Generator</h1>
+            </div>
+            <p class="tagline">Create realistic AI videos for free — no limits, no watermarks</p>
+        </header>
+
+        <main class="main-content">
+            <div class="generator-section">
+                <div class="input-section">
+                    <h2><i class="fas fa-magic"></i> Describe Your Video</h2>
+                    <div class="prompt-container">
+                        <textarea 
+                            id="promptInput" 
+                            placeholder="Example: A futuristic spacecraft flying through a neon nebula, cyberpunk style, 60 seconds" 
+                            rows="4"
+                        ></textarea>
+                        <div class="prompt-info">
+                            <span id="charCount">0 characters</span>
+                            <span class="hint"><i class="fas fa-lightbulb"></i> Be detailed for better results</span>
+                        </div>
+                    </div>
+
+                    <div class="duration-selector">
+                        <label for="duration">
+                            <i class="fas fa-clock"></i> Video Duration (seconds):
+                        </label>
+                        <div class="duration-slider-container">
+                            <input type="range" id="duration" min="5" max="120" value="30" step="5">
+                            <span id="durationValue">30 seconds</span>
+                        </div>
+                        <div class="duration-options">
+                            <button class="duration-btn" data-duration="15">15s</button>
+                            <button class="duration-btn" data-duration="30">30s</button>
+                            <button class="duration-btn" data-duration="60">60s</button>
+                            <button class="duration-btn active" data-duration="90">90s</button>
+                            <button class="duration-btn" data-duration="120">120s</button>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button id="generateBtn" class="btn-primary">
+                            <i class="fas fa-play-circle"></i> Generate Video
+                        </button>
+                        <button id="clearBtn" class="btn-secondary">
+                            <i class="fas fa-eraser"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h2><i class="fas fa-film"></i> Video Preview</h2>
+                    <div class="video-container">
+                        <div id="placeholder" class="video-placeholder">
+                            <i class="fas fa-video"></i>
+                            <p>Your AI-generated video will appear here</p>
+                            <p class="placeholder-subtext">No limits on length or number of generations</p>
+                        </div>
+                        
+                        <video id="videoPlayer" class="video-player" controls style="display: none;">
+                            <!-- Video will be inserted here by JavaScript -->
+                            Your browser does not support the video tag.
+                        </video>
+                        
+                        <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                            <div class="spinner"></div>
+                            <p class="loading-text">Generating your video with AI...</p>
+                            <p class="loading-subtext">This may take up to 60 seconds depending on length</p>
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="errorDisplay" class="error-display" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p id="errorMessage">Error generating video. Please try again.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-actions" style="display: none;" id="videoActions">
+                        <button id="downloadBtn" class="btn-download">
+                            <i class="fas fa-download"></i> Download Video (MP4)
+                        </button>
+                        <button id="shareBtn" class="btn-secondary">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                        <button id="regenerateBtn" class="btn-secondary">
+                            <i class="fas fa-redo"></i> Regenerate
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="tips-container">
+                    <h3><i class="fas fa-lightbulb"></i> Prompt Tips & Examples</h3>
+                    <div class="tips-grid">
+                        <div class="tip-card">
+                            <h4><i class="fas fa-robot"></i> Be Specific</h4>
+                            <p>Instead of "a car", try "a red Tesla driving through a futuristic city at night, neon lights reflecting on wet pavement".</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class="fas fa-palette"></i> Include Style</h4>
+                            <p>Add styles like "cinematic, 4K", "anime style", "watercolor painting", or "80s retro synthwave".</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class="fas fa-film"></i> Camera Movements</h4>
+                            <p>Specify camera angles: "dolly zoom", "aerial shot", "close-up", "slow motion", or "time-lapse".</p>
+                        </div>
+                        <div class="tip-card">
+                            <h4><i class="fas fa-magic"></i> Example Prompts</h4>
+                            <ul>
+                                <li>Astronaut riding a horse on Mars, sunset, cinematic</li>
+                                <li>Underwater city with glowing jellyfish, bioluminescent, 45 seconds</li>
+                                <li>Time-lapse of a flower blooming in a cyberpunk garden</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-container">
+                    <h3><i class="fas fa-star"></i> Unlimited & Free Features</h3>
+                    <div class="features-list">
+                        <div class="feature">
+                            <i class="fas fa-infinity"></i>
+                            <div>
+                                <h4>No Generation Limits</h4>
+                                <p>Create as many videos as you want, completely free.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-hourglass-end"></i>
+                            <div>
+                                <h4>No Duration Limits</h4>
+                                <p>Generate videos from 5 seconds to 2 minutes or longer.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <div>
+                                <h4>Fast Processing</h4>
+                                <p>Our AI servers generate videos quickly, even at high quality.</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4>Direct Downloads</h4>
+                                <p>Download in MP4 format with no watermarks or restrictions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>AI Video Generator &copy; 2023 | Powered by cutting-edge AI video synthesis technology</p>
+            <p class="footer-note">
+                <i class="fas fa-exclamation-circle"></i> 
+                Note: This is a frontend demonstration. To connect to an AI video API, insert your endpoint and API key in the JavaScript section below.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const promptInput = document.getElementById('promptInput');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const placeholder = document.getElementById('placeholder');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorDisplay = document.getElementById('errorDisplay');
+        const videoActions = document.getElementById('videoActions');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const regenerateBtn = document.getElementById('regenerateBtn');
+        const durationSlider = document.getElementById('duration');
+        const durationValue = document.getElementById('durationValue');
+        const durationButtons = document.querySelectorAll('.duration-btn');
+        const charCount = document.getElementById('charCount');
+
+        // Character counter for prompt
+        promptInput.addEventListener('input', () => {
+            const length = promptInput.value.length;
+            charCount.textContent = `${length} characters`;
+            
+            // Visual feedback for good prompts
+            if (length > 100) {
+                charCount.style.color = '#10b981';
+            } else if (length > 20) {
+                charCount.style.color = '#f59e0b';
+            } else {
+                charCount.style.color = '#ef4444';
+            }
+        });
+
+        // Duration slider
+        durationSlider.addEventListener('input', () => {
+            durationValue.textContent = `${durationSlider.value} seconds`;
+            updateDurationButtons(parseInt(durationSlider.value));
+        });
+
+        // Duration buttons
+        durationButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const duration = parseInt(button.getAttribute('data-duration'));
+                durationSlider.value = duration;
+                durationValue.textContent = `${duration} seconds`;
+                
+                // Update active button
+                durationButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
+        });
+
+        function updateDurationButtons(duration) {
+            durationButtons.forEach(button => {
+                if (parseInt(button.getAttribute('data-duration')) === duration) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+        }
+
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            promptInput.value = '';
+            charCount.textContent = '0 characters';
+            charCount.style.color = '#6b7280';
+            hideVideoPlayer();
+        });
+
+        // Generate video button
+        generateBtn.addEventListener('click', async () => {
+            const prompt = promptInput.value.trim();
+            const duration = parseInt(durationSlider.value);
+            
+            // Validate input
+            if (!prompt) {
+                showError('Please enter a description for your video');
+                return;
+            }
+            
+            if (prompt.length < 10) {
+                showError('Please provide a more detailed description (at least 10 characters)');
+                return;
+            }
+            
+            // Show loading state
+            showLoading();
+            
+            // In a real implementation, this would call an AI video generation API
+            // For demonstration, we'll simulate the API call with a timeout
+            simulateVideoGeneration(prompt, duration);
+        });
+
+        // Download button
+        downloadBtn.addEventListener('click', () => {
+            // In a real implementation, this would download the actual generated video
+            // For demonstration, we'll show a success message
+            alert('Download started! In a real implementation, this would download the MP4 file.');
+            
+            // Simulate download completion
+            setTimeout(() => {
+                showMessage('Video downloaded successfully!', 'success');
+            }, 500);
+        });
+
+        // Share button
+        shareBtn.addEventListener('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My AI-Generated Video',
+                    text: `I created this video with AI: "${promptInput.value.substring(0, 100)}..."`,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback copy to clipboard
+                navigator.clipboard.writeText(window.location.href)
+                    .then(() => showMessage('Link copied to clipboard!', 'success'))
+                    .catch(() => showMessage('Could not copy link', 'error'));
+            }
+        });
+
+        // Regenerate button
+        regenerateBtn.addEventListener('click', () => {
+            generateBtn.click();
+        });
+
+        // UI Functions
+        function showLoading() {
+            placeholder.style.display = 'none';
+            videoPlayer.style.display = 'none';
+            errorDisplay.style.display = 'none';
+            loadingIndicator.style.display = 'block';
+            videoActions.style.display = 'none';
+            
+            // Animate progress bar
+            const progressFill = document.querySelector('.progress-fill');
+            progressFill.style.animation = 'progressAnimation 60s linear forwards';
+            
+            // Disable generate button during processing
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+        }
+
+        function showVideoPlayer(videoUrl) {
+            loadingIndicator.style.display = 'none';
+            errorDisplay.style.display = 'none';
+            placeholder.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            videoActions.style.display = 'flex';
+            
+            // Set video source
+            videoPlayer.src = videoUrl;
+            videoPlayer.load();
+            
+            // Re-enable generate button
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = '<i class="fas fa-play-circle"></i> Generate Video';
+        }
+
+        function hideVideoPlayer() {
+            videoPlayer.style.display = 'none';
+            videoActions.style.display = 'none';
+            placeholder.style.display = 'flex';
+            loadingIndicator.style.display = 'none';
+            errorDisplay.style.display = 'none';
+        }
+
+        function showError(message) {
+            loadingIndicator.style.display = 'none';
+            placeholder.style.display = 'none';
+            videoPlayer.style.display = 'none';
+            errorDisplay.style.display = 'flex';
+            videoActions.style.display = 'none';
+            
+            document.getElementById('errorMessage').textContent = message;
+            
+            // Re-enable generate button
+            generateBtn.disabled = false;
+            generateBtn.innerHTML = '<i class="fas fa-play-circle"></i> Generate Video';
+        }
+
+        function showMessage(message, type) {
+            // Create a temporary message element
+            const messageEl = document.createElement('div');
+            messageEl.className = `message ${type}`;
+            messageEl.textContent = message;
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            if (type === 'success') {
+                messageEl.style.backgroundColor = '#10b981';
+            } else {
+                messageEl.style.backgroundColor = '#ef4444';
+            }
+            
+            document.body.appendChild(messageEl);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                messageEl.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => document.body.removeChild(messageEl), 300);
+            }, 3000);
+        }
+
+        // Simulate video generation (for demonstration)
+        // REPLACE THIS WITH ACTUAL API CALL TO YOUR AI VIDEO SERVICE
+        function simulateVideoGeneration(prompt, duration) {
+            console.log(`Generating video with prompt: "${prompt}" (${duration} seconds)`);
+            
+            // Simulate API call delay based on duration
+            const delay = Math.min(duration * 500, 30000); // Max 30 seconds for demo
+            
+            setTimeout(() => {
+                // In a real implementation, you would:
+                // 1. Call the AI video generation API
+                // 2. Get a video URL or file in response
+                // 3. Display the video in the player
+                
+                // Example API call structure (commented out - replace with your actual API):
+                /*
+                // IMPORTANT: Replace with your actual API endpoint and key
+                const apiEndpoint = 'https://api.example.com/v1/generate-video';
+                const apiKey = 'YOUR_API_KEY_HERE';
+                
+                fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: prompt,
+                        duration: duration,
+                        // Add other parameters as required by your API
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Assuming the API returns a video URL
+                        showVideoPlayer(data.videoUrl);
+                    } else {
+                        showError(data.error || 'Failed to generate video');
+                    }
+                })
+                .catch(error => {
+                    console.error('API Error:', error);
+                    showError('Network error. Please check your connection and try again.');
+                });
+                */
+                
+                // For demonstration, we'll simulate a successful generation
+                // with a sample video (using a placeholder video from a free service)
+                const sampleVideos = [
+                    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+                    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+                ];
+                
+                // Pick a random sample video
+                const randomVideo = sampleVideos[Math.floor(Math.random() * sampleVideos.length)];
+                showVideoPlayer(randomVideo);
+                showMessage('Video generated successfully!', 'success');
+                
+            }, delay);
+        }
+
+        // Initialize
+        updateDurationButtons(30);
+    </script>
+</body>
+</html>
